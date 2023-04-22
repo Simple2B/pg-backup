@@ -1,4 +1,4 @@
-# docker-backup-s3
+# pg-backup
 
 Backup Postgres db and data files to mounted volume /backup
 
@@ -7,21 +7,20 @@ Backup Postgres db and data files to mounted volume /backup
 Docker Compose:
 
 ```yaml
-database:
-  image: postgres:12
+db:
+  image: postgres:14
   environment:
-    POSTGRES_DB: dbname
+    POSTGRES_DB: db
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
 
 backup:
-  build: pg-backup/
-  image: slitidd/chairlift-pg-backup
+  image: simple2b/pg-backup
   links:
     - database
   environment:
     SCHEDULE: "@daily"
-    POSTGRES_DATABASE: dbname
+    POSTGRES_DATABASE: db
     POSTGRES_USER: user
     POSTGRES_PASSWORD: password
     POSTGRES_EXTRA_OPTS: "--schema=public --blobs"
@@ -36,17 +35,15 @@ You can additionally set the `SCHEDULE` environment variable like `-e SCHEDULE="
 
 ### Predefined schedules
 
-|Entry                 | Description                                | Equivalent To
-|----------------------|--------------------------------------------|--------------
-|@yearly (or @annually)| Run once a year, midnight, Jan. 1st        | 0 0 0 1 1 *
-|@monthly              | Run once a month, midnight, first of month | 0 0 0 1 * *
-|@weekly               | Run once a week, midnight between Sat/Sun  | 0 0 0 * * 0
-|@daily (or @midnight) | Run once a day, midnight                   | 0 0 0 * * *
-|@hourly               | Run once an hour, beginning of hour        | 0 0 * * * *
-
+| Entry                  | Description                                | Equivalent To   |
+| ---------------------- | ------------------------------------------ | --------------- |
+| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 0 1 1 \*    |
+| @monthly               | Run once a month, midnight, first of month | 0 0 0 1 \* \*   |
+| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 0 \* \* 0   |
+| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 0 \* \* \*  |
+| @hourly                | Run once an hour, beginning of hour        | 0 0 \* \* \* \* |
 
 More details - (Go-lang cron)[https://pkg.go.dev/github.com/robfig/cron#hdr-Predefined_schedules]
-
 
 ### Manually create backup
 
