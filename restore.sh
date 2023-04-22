@@ -3,6 +3,23 @@
 set -e
 set -o pipefail
 
+if [ "${S3_BUCKET}" = "**None**" ]; then
+  METHOD=FS
+else
+  METHOD=S3
+fi
+echo METHOD=${METHOD}
+
+if [ "${METHOD}" = "S3" && "${S3_ACCESS_KEY_ID}" = "**None**" ]; then
+  echo "You need to set the S3_ACCESS_KEY_ID environment variable."
+  exit 1
+fi
+
+if [ "${METHOD}" = "S3" && "${S3_SECRET_ACCESS_KEY}" = "**None**" ]; then
+  echo "You need to set the S3_SECRET_ACCESS_KEY environment variable."
+  exit 1
+fi
+
 if [ "${POSTGRES_DATABASE}" = "**None**" ]; then
   echo "You need to set the POSTGRES_DATABASE environment variable."
   exit 1
@@ -28,16 +45,27 @@ if [ "${POSTGRES_PASSWORD}" = "**None**" ]; then
   exit 1
 fi
 
+# env vars needed for aws tools
+export AWS_ACCESS_KEY_ID=$S3_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$S3_SECRET_ACCESS_KEY
+export AWS_DEFAULT_REGION=$S3_REGION
+
 export PGPASSWORD=$POSTGRES_PASSWORD
 POSTGRES_HOST_OPTS="-h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER"
 
 echo "Finding latest backup"
 
-LATEST_BACKUP=$(ls /backup/*.tgz | sort | tail -n 1)
+if [ "${METHOD}" = "S3" ]; then
+  LATEST_BACKUP=$(aws s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | sort | tail -n 1 | awk '{ print $4 }')
+  echo "Fetching ${LATEST_BACKUP} from S3"
+  aws s3 cp s3://$S3_BUCKET/$S3_PREFIX/${LATEST_BACKUP} backup.tgz
+else
+  LATEST_BACKUP=$(ls /backup/*.tgz | sort | tail -n 1)
+  echo "Fetching ${LATEST_BACKUP} from /backup"
+  cp ${LATEST_BACKUP} backup.tgz
+fi
 
-echo "Fetching ${LATEST_BACKUP} from /backup"
 
-cp ${LATEST_BACKUP} backup.tgz
 # gzip -d dump.sql.gz
 tar xvzf backup.tgz
 

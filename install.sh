@@ -7,10 +7,11 @@ set -e
 apk update
 
 # install pg_dump
-apk add postgresql13
+apk add postgresql
 
 # install s3 tools
-# apk add python3 py3-pip
+apk add python3 py3-pip
+pip install awscli
 
 # install go-cron
 apk add curl
