@@ -10,12 +10,12 @@ else
 fi
 echo METHOD=${METHOD}
 
-if [ "${METHOD}" = "S3" && "${S3_ACCESS_KEY_ID}" = "**None**" ]; then
+if [ "${METHOD}" = "S3" ] && [ "${S3_ACCESS_KEY_ID}" = "**None**" ]; then
   echo "You need to set the S3_ACCESS_KEY_ID environment variable."
   exit 1
 fi
 
-if [ "${METHOD}" = "S3" && "${S3_SECRET_ACCESS_KEY}" = "**None**" ]; then
+if [ "${METHOD}" = "S3" ] && [ "${S3_SECRET_ACCESS_KEY}" = "**None**" ]; then
   echo "You need to set the S3_SECRET_ACCESS_KEY environment variable."
   exit 1
 fi
