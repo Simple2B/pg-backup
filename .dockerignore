@@ -4,3 +4,8 @@
 /.vscode/
 /.venv/
 /tox.ini
+dump.*
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
