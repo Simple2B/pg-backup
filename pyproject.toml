@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pg-backup"
+version = "0.0.1"
+description = "Service for scheduled Postgres DB backup"
+authors = ["Simple2B <simple2b.info@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^2.0.3"
+apscheduler = "^3.10.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+flake8 = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
