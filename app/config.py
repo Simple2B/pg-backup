@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from functools import lru_cache
 from pydantic import BaseSettings
 from app.logger import log
@@ -27,10 +28,21 @@ class BaseConfig(BaseSettings):
     S3_PATH: str = "backup"
     S3_ENDPOINT: str | None
     S3_S3V4: str = "no"
-    SCHEDULE: str = "0 0 * * *"
     DROP_PUBLIC: str = "yes"
     DATA_FOLDERS_TO_BACKUP: str | None
     DAYS_HISTORY: int = 30
+
+    # Schedule
+    SCHEDULE_HOUR: int | None
+    SCHEDULE_MINUTE: int | None
+    SCHEDULE_YEAR: int | None
+    SCHEDULE_MONTH: int | None
+    SCHEDULE_DAY: int | None
+    SCHEDULE_WEEK: int | None
+    SCHEDULE_DAY_OF_WEEK: int | None
+    SCHEDULE_SECOND: int | None
+    SCHEDULE_START_DATE: datetime | None
+    SCHEDULE_END_DATE: datetime | None
 
     class Config:
         # `.env` takes priority over `project.env`
