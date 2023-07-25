@@ -3,6 +3,7 @@
 set -e
 set -o pipefail
 
+echo S3_BUCKET=${S3_BUCKET}
 if [ "${S3_BUCKET}" = "**None**" ]; then
   METHOD=FS
 else
@@ -61,7 +62,7 @@ export PGPASSWORD=$POSTGRES_PASSWORD
 POSTGRES_HOST_OPTS="-h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER $POSTGRES_EXTRA_OPTS"
 
 echo "Creating dump of ${POSTGRES_DATABASE} database from ${POSTGRES_HOST}..."
-pg_dump $POSTGRES_HOST_OPTS $POSTGRES_DATABASE > dump.sql
+echo pg_dump $POSTGRES_HOST_OPTS $POSTGRES_DATABASE > dump.sql
 
 echo "Compressing data..."
 if [ "${DATA_FOLDERS_TO_BACKUP}" = "**None**" ]; then
@@ -74,11 +75,13 @@ if [ "${METHOD}" = "S3" ]; then
   echo "Uploading achive to $S3_BUCKET"
   cat backup.tgz | aws $AWS_ARGS s3 cp - s3://$S3_BUCKET/$S3_PREFIX/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").tgz || exit 2
 else
-  echo "Copy achive to /backup"
-  cp backup.tgz /backup/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").tgz
+  echo "Copy achive to ./backup/"
+  cp backup.tgz ./backup/${POSTGRES_DATABASE}_$(date +"%Y-%m-%dT%H:%M:%SZ").tgz
   echo "Remove oldest backups"
-  ls -tp /backup/*.tgz | grep -v '/$' | tail -n +${DAYS_HISTORY}
-  ls -tp /backup/*.tgz | grep -v '/$' | tail -n +${DAYS_HISTORY} | xargs -I {} rm -- {}
+  ls -tp ./backup/*.tgz | grep -v '/$' | tail -n +${DAYS_HISTORY}
+  ls -tp ./backup/*.tgz | grep -v '/$' | tail -n +${DAYS_HISTORY} | xargs -I {} rm -- {}
 fi
 
 echo "DB backuped successfully"
+
+exit 0

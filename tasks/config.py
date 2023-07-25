@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 from functools import lru_cache
-from pydantic import BaseSettings
-from app.logger import log
+from pydantic_settings import BaseSettings
+from .logger import log
 
 APP_ENV = os.environ.get("APP_ENV", "development")
 
@@ -10,6 +10,7 @@ APP_ENV = os.environ.get("APP_ENV", "development")
 class BaseConfig(BaseSettings):
     """Base configuration."""
 
+    ENV: str = APP_ENV
     DEBUG: bool = False
     LOG_LEVEL: int = log.INFO
     APP_NAME: str = "pg_backup"
@@ -20,29 +21,30 @@ class BaseConfig(BaseSettings):
     POSTGRES_PORT: int
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
-    POSTGRES_EXTRA_OPTS: str | None
-    S3_ACCESS_KEY_ID: str | None
-    S3_SECRET_ACCESS_KEY: str | None
-    S3_BUCKET: str | None
-    S3_REGION: str | None
+    POSTGRES_EXTRA_OPTS: str = ""
+    LOCAL_DB_PORT: int = 5432
+    S3_ACCESS_KEY_ID: str
+    S3_SECRET_ACCESS_KEY: str
+    S3_BUCKET: str
+    S3_REGION: str
     S3_PATH: str = "backup"
     S3_ENDPOINT: str | None
     S3_S3V4: str = "no"
     DROP_PUBLIC: str = "yes"
-    DATA_FOLDERS_TO_BACKUP: str | None
+    DATA_FOLDERS_TO_BACKUP: str
     DAYS_HISTORY: int = 30
 
     # Schedule
-    SCHEDULE_HOUR: int | None
-    SCHEDULE_MINUTE: int | None
-    SCHEDULE_YEAR: int | None
-    SCHEDULE_MONTH: int | None
-    SCHEDULE_DAY: int | None
-    SCHEDULE_WEEK: int | None
-    SCHEDULE_DAY_OF_WEEK: int | None
-    SCHEDULE_SECOND: int | None
-    SCHEDULE_START_DATE: datetime | None
-    SCHEDULE_END_DATE: datetime | None
+    SCHEDULE_HOUR: int | None = None
+    SCHEDULE_MINUTE: int | None = None
+    SCHEDULE_YEAR: int | None = None
+    SCHEDULE_MONTH: int | None = None
+    SCHEDULE_DAY: int | None = None
+    SCHEDULE_WEEK: int | None = None
+    SCHEDULE_DAY_OF_WEEK: int | None = None
+    SCHEDULE_SECOND: int | None = None
+    SCHEDULE_START_DATE: datetime | None = None
+    SCHEDULE_END_DATE: datetime | None = None
 
     class Config:
         # `.env` takes priority over `project.env`
@@ -54,27 +56,12 @@ class DevelopmentConfig(BaseConfig):
 
     DEBUG: bool = True
     LOG_LEVEL: int = log.DEBUG
-    DATABASE_URI: str
-
-    class Config:
-        fields = {
-            "DATABASE_URI": {
-                "env": "DEVELOP_DATABASE_URL",
-            }
-        }
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
 
-    DATABASE_URI: str
-
-    class Config:
-        fields = {
-            "DATABASE_URI": {
-                "env": "DATABASE_URL",
-            }
-        }
+    LOG_LEVEL: int = log.INFO
 
 
 @lru_cache
