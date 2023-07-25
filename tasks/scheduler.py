@@ -1,6 +1,5 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
-from apscheduler.triggers.interval import IntervalTrigger
 
 from invoke import Context, task
 
@@ -35,7 +34,6 @@ def scheduler(ctx: Context):
         start_date=CFG.SCHEDULE_START_DATE,
         end_date=CFG.SCHEDULE_END_DATE,
     )
-    trigger = IntervalTrigger(seconds=CFG.SCHEDULE_SECOND)
     log(log.DEBUG, "Scheduler trigger: %s", trigger)
     scheduler.add_job(
         backup_run,
