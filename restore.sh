@@ -60,7 +60,7 @@ if [ "${METHOD}" = "S3" ]; then
   echo "Fetching ${LATEST_BACKUP} from S3"
   aws s3 cp s3://$S3_BUCKET/$S3_PREFIX/${LATEST_BACKUP} backup.tgz
 else
-  LATEST_BACKUP=$(ls /backup/*.tgz | sort | tail -n 1)
+  LATEST_BACKUP=$(ls ./backup/*.tgz | sort | tail -n 1)
   echo "Fetching ${LATEST_BACKUP} from /backup"
   cp ${LATEST_BACKUP} backup.tgz
 fi

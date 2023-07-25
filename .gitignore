@@ -4,3 +4,4 @@ dump.*
 *.pyo
 *.pyd
 __pycache__/
+backup.tgz

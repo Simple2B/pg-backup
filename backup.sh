@@ -62,7 +62,7 @@ export PGPASSWORD=$POSTGRES_PASSWORD
 POSTGRES_HOST_OPTS="-h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER $POSTGRES_EXTRA_OPTS"
 
 echo "Creating dump of ${POSTGRES_DATABASE} database from ${POSTGRES_HOST}..."
-echo pg_dump $POSTGRES_HOST_OPTS $POSTGRES_DATABASE > dump.sql
+pg_dump $POSTGRES_HOST_OPTS $POSTGRES_DATABASE > dump.sql
 
 echo "Compressing data..."
 if [ "${DATA_FOLDERS_TO_BACKUP}" = "**None**" ]; then
