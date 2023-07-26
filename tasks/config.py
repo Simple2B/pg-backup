@@ -27,7 +27,7 @@ class BaseConfig(BaseSettings):
     S3_SECRET_ACCESS_KEY: str
     S3_BUCKET: str
     S3_REGION: str
-    S3_PATH: str = "backup"
+    S3_PREFIX: str = "backup"
     S3_ENDPOINT: str | None
     S3_S3V4: str = "no"
     DROP_PUBLIC: str = "yes"
@@ -67,9 +67,9 @@ class ProductionConfig(BaseConfig):
 @lru_cache
 def config(name=APP_ENV) -> DevelopmentConfig | ProductionConfig:
     CONF_MAP = dict(
-        development=DevelopmentConfig(),
-        production=ProductionConfig(),
+        development=DevelopmentConfig,
+        production=ProductionConfig,
     )
-    configuration = CONF_MAP[name]
+    configuration = CONF_MAP[name]()
     configuration.ENV = name
     return configuration

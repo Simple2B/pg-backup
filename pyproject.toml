@@ -15,6 +15,7 @@ pydantic-settings = "^2.0.2"
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
 flake8 = "^6.0.0"
+awscli = "^1.29.11"
 
 [build-system]
 requires = ["poetry-core"]

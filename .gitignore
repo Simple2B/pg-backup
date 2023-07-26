@@ -5,3 +5,4 @@ dump.*
 *.pyd
 __pycache__/
 backup.tgz
+.env
