@@ -21,8 +21,12 @@ services:
     # image: simple2b/pg-backup:latest
     links:
       - db
+    volumes:
+      - ./backup:/backup
     environment:
-      SCHEDULE: "@daily"
+      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
+      SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
+      SCHEDULE_SECOND: ${SCHEDULE_SECOND:-0}
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${POSTGRES_USER:-postgres}

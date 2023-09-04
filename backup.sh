@@ -1,7 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
-set -o pipefail
+# set -o pipefail
 
 echo S3_BUCKET=${S3_BUCKET}
 if [ "${S3_BUCKET}" = "**None**" ]; then

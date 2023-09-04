@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM python:3.11
 
 ADD install.sh install.sh
 RUN sh install.sh && rm install.sh
@@ -22,9 +22,15 @@ ENV DROP_PUBLIC 'yes'
 ENV DATA_FOLDERS_TO_BACKUP **None**
 ENV DAYS_HISTORY 30
 
+COPY pyproject.toml pyproject.toml
+COPY poetry.lock poetry.lock
+RUN poetry install --without dev
+COPY ./tasks /tasks
+
 ADD run.sh run.sh
 ADD backup.sh backup.sh
 ADD restore.sh restore.sh
+RUN chmod +x run.sh backup.sh restore.sh
 
 
 CMD ["sh", "run.sh"]

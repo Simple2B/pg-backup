@@ -1,7 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
-set -o pipefail
+# set -o pipefail
 
 if [ "${S3_BUCKET}" = "**None**" ]; then
   METHOD=FS
