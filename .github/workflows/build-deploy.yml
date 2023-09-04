@@ -59,4 +59,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: simple2b/car-qr-label:latest
+          tags: simple2b/pg-backup:latest

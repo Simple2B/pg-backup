@@ -31,9 +31,6 @@ git pull
 poetry version $1
 new_version=$(poetry version -s)
 
-# Build UI
-yarn build
-
 # Commit the change
 git commit -am v${new_version}
 
