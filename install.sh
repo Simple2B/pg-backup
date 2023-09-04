@@ -1,6 +1,5 @@
-#! /bin/sh
+#! /bin/bash
 
-# exit if a command fails
 set -e
 
 apt update && apt upgrade -y

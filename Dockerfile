@@ -1,7 +1,7 @@
 FROM python:3.11
 
 ADD install.sh install.sh
-RUN sh install.sh && rm install.sh
+RUN bash install.sh && rm install.sh
 
 ENV POSTGRES_DATABASE **None**
 ENV POSTGRES_HOST **None**
