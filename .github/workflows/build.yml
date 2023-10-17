@@ -1,12 +1,13 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Bult & Deploy
+name: Testing and Building PostgreSQL-Backup container
 
 on:
   push:
     tags:
-      - "v*"
+      - "v*.*.*"
+env:
+  DOCKERHUB_USERNAME: simple2b
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  PROJECT_IMAGE: simple2b/pg-backup
 
 jobs:
   tests:
@@ -48,6 +49,16 @@ jobs:
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - name: Docker meta
+        id: project_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.PROJECT_IMAGE }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
         with:
@@ -55,11 +66,12 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
+          username: ${{ env.DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKERHUB_TOKEN }}
+      - name: Build and Push pg-backup image
         uses: docker/build-push-action@v4
         with:
-          push: true
-          tags: simple2b/pg-backup:latest
-          platforms: "linux/amd64,linux/arm64"
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.project_meta.outputs.tags }}
+          labels: ${{ steps.project_meta.outputs.labels }}
