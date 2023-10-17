@@ -16,7 +16,7 @@ services:
       - 127.0.0.1:${LOCAL_DB_PORT:-15432}:5432
 
   backup:
-    image: simple2b/pg-backup:latest
+    image: simple2b/pg-backup:latest # set version
     links:
       - db
     volumes:
