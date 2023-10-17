@@ -15,26 +15,15 @@ services:
     ports:
       - 127.0.0.1:${LOCAL_DB_PORT:-15432}:5432
 
-# default backup time is set for weekly on Sundays midnight
   backup:
-    image: simple2b/pg-backup:1.0 # set up desired version here
+    image: simple2b/pg-backup:latest
     links:
       - db
     volumes:
       - ./backup:/backup
     environment:
-      # scheduler
-      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
-      SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
-      SCHEDULE_SECOND: ${SCHEDULE_SECOND:-0}
-      SCHEDULE_YEAR: ${SCHEDULE_YEAR:-0}
-      SCHEDULE_MONTH: ${SCHEDULE_MONTH:-0}
-      SCHEDULE_DAY: ${SCHEDULE_DAY:-0}
-      SCHEDULE_WEEK: ${SCHEDULE_WEEK:-0}
-      SCHEDULE_DAY_OF_WEEK: ${SCHEDULE_DAY_OF_WEEK:-0}
-      SCHEDULE_START_DATE: ${SCHEDULE_START_DATE:-**None**}
-      SCHEDULE_END_DATE: ${SCHEDULE_END_DATE:-**None**}
-
+      # scheduler for every 3 days
+      SCHEDULE_DAY: ${SCHEDULE_DAY:-3}
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
