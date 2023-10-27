@@ -35,14 +35,14 @@ class BaseConfig(BaseSettings):
     DAYS_HISTORY: int = 30
 
     # Schedule
-    SCHEDULE_HOUR: int | str = "*"
-    SCHEDULE_MINUTE: int | str = "*"
+    SCHEDULE_HOUR: int = 0
+    SCHEDULE_MINUTE: int = 0
     SCHEDULE_YEAR: int | str = "*"
     SCHEDULE_MONTH: int | str = "*"
     SCHEDULE_DAY: int | str = "*"
     SCHEDULE_WEEK: int | str = "*"
     SCHEDULE_DAY_OF_WEEK: int | str = "*"
-    SCHEDULE_SECOND: int | str = "*"
+    SCHEDULE_SECOND: int = 0
     SCHEDULE_START_DATE: datetime | None = None
     SCHEDULE_END_DATE: datetime | None = None
 
