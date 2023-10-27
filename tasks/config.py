@@ -34,8 +34,8 @@ class BaseConfig(BaseSettings):
     DATA_FOLDERS_TO_BACKUP: str
     DAYS_HISTORY: int = 30
     # GCS
-    GCS_BUCKET:str | None
-    GCS_PREFIX:str  = "backup"
+    GCS_BUCKET: str | None
+    GCS_PREFIX: str = "backup"
 
     # Schedule
     SCHEDULE_HOUR: int = 0
