@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pg-backup"
-version = "1.0.4"
+version = "1.0.7"
 description = "Service for scheduled Postgres DB backup"
 authors = ["Simple2B <simple2b.info@gmail.com>"]
 license = "MIT"

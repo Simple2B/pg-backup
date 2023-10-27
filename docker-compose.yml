@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   db:
@@ -15,7 +15,6 @@ services:
     ports:
       - 127.0.0.1:${LOCAL_DB_PORT:-15432}:5432
 
-
   backup:
     build: .
     # image: simple2b/pg-backup:1.0
@@ -27,14 +26,14 @@ services:
     #   - .env
     environment:
       # scheduler
-      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
+      SCHEDULE_SECOND: ${SCHEDULE_SECOND:-0}
       SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
-      SCHEDULE_SECOND: ${SCHEDULE_SECOND:-10}
-      SCHEDULE_YEAR: ${SCHEDULE_YEAR:-0}
-      SCHEDULE_MONTH: ${SCHEDULE_MONTH:-0}
-      SCHEDULE_DAY: ${SCHEDULE_DAY:-0}
-      SCHEDULE_WEEK: ${SCHEDULE_WEEK:-0}
-      SCHEDULE_DAY_OF_WEEK: ${SCHEDULE_DAY_OF_WEEK:-0}
+      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
+      SCHEDULE_DAY: ${SCHEDULE_DAY:-"*"}
+      SCHEDULE_DAY_OF_WEEK: ${SCHEDULE_DAY_OF_WEEK:-"*"}
+      SCHEDULE_WEEK: ${SCHEDULE_WEEK:-"*"}
+      SCHEDULE_MONTH: ${SCHEDULE_MONTH:-"*"}
+      SCHEDULE_YEAR: ${SCHEDULE_YEAR:-"*"}
       SCHEDULE_START_DATE: ${SCHEDULE_START_DATE:-**None**}
       SCHEDULE_END_DATE: ${SCHEDULE_END_DATE:-**None**}
       DROP_PUBLIC: ${DROP_PUBLIC:-yes}
@@ -44,8 +43,8 @@ services:
       POSTGRES_HOST: db
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-passwd}
-      POSTGRES_EXTRA_OPTS: "--schema=public --blobs"
-      # S3
+      POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
+      # AWS
       S3_REGION: ${S3_REGION:-**None**}
       S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
       S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
@@ -54,7 +53,7 @@ services:
       AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
       AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
       AWS_DEFAULT_REGION: ${S3_REGION:-**None**}
-      # google cloud storage
+      # Google cloud storage
       GCS_BUCKET: ${GCS_BUCKET:-**None**}
       GCS_PREFIX: ${GCS_PREFIX:-backup}
 
