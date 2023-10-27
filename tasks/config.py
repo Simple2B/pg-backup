@@ -41,7 +41,7 @@ class BaseConfig(BaseSettings):
     SCHEDULE_MONTH: int | str = "*"
     SCHEDULE_DAY: int | str = "*"
     SCHEDULE_WEEK: int | str = "*"
-    SCHEDULE_DAY_OF_WEEK:int | str = "*"
+    SCHEDULE_DAY_OF_WEEK: int | str = "*"
     SCHEDULE_SECOND: int | str = "*"
     SCHEDULE_START_DATE: datetime | None = None
     SCHEDULE_END_DATE: datetime | None = None
