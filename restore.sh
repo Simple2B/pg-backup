@@ -2,12 +2,17 @@
 
 set -e
 # set -o pipefail
+echo S3_BUCKET=${S3_BUCKET}
+echo GCS_BUCKET=${GCS_BUCKET}
 
-if [ "${S3_BUCKET}" = "**None**" ]; then
-  METHOD=FS
-else
+if [ "${S3_BUCKET}" != "**None**" ]; then
   METHOD=S3
+elif [ "${GCS_BUCKET}" != "**None**" ]; then
+  METHOD=GCS
+else
+  METHOD=FS
 fi
+
 echo METHOD=${METHOD}
 
 if [ "${METHOD}" = "S3" ] && [ "${S3_ACCESS_KEY_ID}" = "**None**" ]; then
@@ -59,6 +64,10 @@ if [ "${METHOD}" = "S3" ]; then
   LATEST_BACKUP=$(aws s3 ls s3://$S3_BUCKET/$S3_PREFIX/ | sort | tail -n 1 | awk '{ print $4 }')
   echo "Fetching ${LATEST_BACKUP} from S3"
   aws s3 cp s3://$S3_BUCKET/$S3_PREFIX/${LATEST_BACKUP} backup.tgz
+elif [ "${METHOD}" = "GCS" ]; then
+  LATEST_BACKUP=$(gsutil ls gs://$GCS_BUCKET/$GCS_PREFIX/ | sort | tail -n 1)
+  echo "Fetching ${LATEST_BACKUP} from GCS"
+  gsutil cp ${LATEST_BACKUP} backup.tgz
 else
   LATEST_BACKUP=$(ls ./backup/*.tgz | sort | tail -n 1)
   echo "Fetching ${LATEST_BACKUP} from /backup"
