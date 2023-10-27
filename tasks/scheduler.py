@@ -31,8 +31,6 @@ def scheduler(ctx: Context):
         week=CFG.SCHEDULE_WEEK,
         day_of_week=CFG.SCHEDULE_DAY_OF_WEEK,
         second=CFG.SCHEDULE_SECOND,
-        start_date=CFG.SCHEDULE_START_DATE,
-        end_date=CFG.SCHEDULE_END_DATE,
     )
     log(log.DEBUG, "Scheduler trigger: %s", trigger)
     scheduler.add_job(
