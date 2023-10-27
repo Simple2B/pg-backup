@@ -78,9 +78,9 @@ fi
 # gzip -d dump.sql.gz
 tar xvzf backup.tgz
 
-if [ "${DROP_PUBLIC}" == "yes" ]; then
-	echo "Recreating the public schema"
-	psql $POSTGRES_HOST_OPTS -d $POSTGRES_DATABASE -c "drop schema public cascade; create schema public;"
+if [ "${DROP_PUBLIC}" = "yes" ]; then
+  echo "Dropping the public schema"
+  psql $POSTGRES_HOST_OPTS -d $POSTGRES_DATABASE -c "DROP SCHEMA IF EXISTS public CASCADE;"
 fi
 
 echo "Restoring ${LATEST_BACKUP}"
