@@ -22,21 +22,27 @@ services:
       - db
     volumes:
       - ./backup:/backup
+    # env_file:
+    #   - .env
     environment:
-      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
-      SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
+      # scheduler
       SCHEDULE_SECOND: ${SCHEDULE_SECOND:-0}
-      SCHEDULE_YEAR: ${SCHEDULE_YEAR:-"*"}
-      SCHEDULE_MONTH: ${SCHEDULE_MONTH:-"*"}
+      SCHEDULE_MINUTE: ${SCHEDULE_MINUTE:-0}
+      SCHEDULE_HOUR: ${SCHEDULE_HOUR:-0}
       SCHEDULE_DAY: ${SCHEDULE_DAY:-"*"}
-      SCHEDULE_WEEK: ${SCHEDULE_WEEK:-"*"}
       SCHEDULE_DAY_OF_WEEK: ${SCHEDULE_DAY_OF_WEEK:-"*"}
+      SCHEDULE_WEEK: ${SCHEDULE_WEEK:-"*"}
+      SCHEDULE_MONTH: ${SCHEDULE_MONTH:-"*"}
+      SCHEDULE_YEAR: ${SCHEDULE_YEAR:-"*"}
+      DROP_PUBLIC: ${DROP_PUBLIC:-yes}
+      DAYS_HISTORY: 7
+      # PG
       POSTGRES_DATABASE: db
       POSTGRES_HOST: db
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-passwd}
       POSTGRES_EXTRA_OPTS: '--schema=public --blobs'
-      DAYS_HISTORY: 7
+      # AWS
       S3_REGION: ${S3_REGION:-**None**}
       S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
       S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
@@ -45,6 +51,10 @@ services:
       AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-**None**}
       AWS_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-**None**}
       AWS_DEFAULT_REGION: ${S3_REGION:-**None**}
+      # Google cloud storage
+      GCS_BUCKET: ${GCS_BUCKET:-**None**}
+      GCS_PREFIX: ${GCS_PREFIX:-backup}
+
 
 volumes:
   db_data:

@@ -21,9 +21,11 @@ ENV SCHEDULE **None**
 ENV DROP_PUBLIC 'yes'
 ENV DATA_FOLDERS_TO_BACKUP **None**
 ENV DAYS_HISTORY 30
+ENV PATH /.venv/bin:$PATH
 
 COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
+COPY poetry.toml poetry.toml
 RUN poetry install --without dev
 COPY ./tasks /tasks
 
